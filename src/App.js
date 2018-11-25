@@ -26,6 +26,7 @@ const App = () => {
     setToDos(toDos.filter(newToDo => newToDo.id !== toDo.id));
 
   const add = toDo => {
+    // Ideally this would be generated server-side to guarantee non-duplications
     const id = toDos[toDos.length - 1].id + 1;
     setToDos([...toDos, { id, description: toDo, done: false }]);
   };
