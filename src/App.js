@@ -3,15 +3,7 @@ import ToDoItem from "./components/ToDoItem";
 import ToDoForm from "./components/ToDoForm";
 import "./App.css";
 
-const initialToDos = [
-  { id: 1, description: "milk the cow", done: false },
-  { id: 2, description: "feed the birds", done: false },
-  { id: 3, description: "shear the sheep", done: false },
-  { id: 4, description: "sew the seeds", done: false },
-  { id: 5, description: "bake the break", done: false }
-];
-
-const App = () => {
+const App = ({ initialToDos }) => {
   const [toDos, setToDos] = useState(initialToDos);
   const [toDoToAdd, setToDoToAdd] = useState("");
 
@@ -34,16 +26,20 @@ const App = () => {
   return (
     <div className="App">
       <h1>To-dos</h1>
-      <ul>
-        {toDos.map(toDo => (
-          <ToDoItem
-            key={toDo.id}
-            toDo={toDo}
-            markDone={markDone}
-            remove={remove}
-          />
-        ))}
-      </ul>
+      {toDos.length === 0 ? (
+        <p>You're all done for today!</p>
+      ) : (
+        <ul>
+          {toDos.map(toDo => (
+            <ToDoItem
+              key={toDo.id}
+              toDo={toDo}
+              markDone={markDone}
+              remove={remove}
+            />
+          ))}
+        </ul>
+      )}
       <ToDoForm add={add} setToDoToAdd={setToDoToAdd} toDoToAdd={toDoToAdd} />
     </div>
   );
