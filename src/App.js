@@ -1,28 +1,51 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ToDoItem from "./components/ToDoItem";
+import ToDoForm from "./components/ToDoForm";
+import "./App.css";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+const initialToDos = [
+  { id: 1, description: "milk the cow", done: false },
+  { id: 2, description: "feed the birds", done: false },
+  { id: 3, description: "shear the sheep", done: false },
+  { id: 4, description: "sew the seeds", done: false },
+  { id: 5, description: "bake the break", done: false }
+];
+
+const App = () => {
+  const [toDos, setToDos] = useState(initialToDos);
+  const [toDoToAdd, setToDoToAdd] = useState("");
+
+  const markDone = doneToDo =>
+    setToDos(
+      toDos.map(toDo =>
+        doneToDo.id === toDo.id ? { ...doneToDo, done: true } : { ...toDo }
+      )
     );
-  }
-}
+
+  const remove = toDo =>
+    setToDos(toDos.filter(newToDo => newToDo.id !== toDo.id));
+
+  const add = toDo => {
+    const id = toDos[toDos.length - 1].id + 1;
+    setToDos([...toDos, { id, description: toDo, done: false }]);
+  };
+
+  return (
+    <div className="App">
+      <h1>To-dos</h1>
+      <ul>
+        {toDos.map(toDo => (
+          <ToDoItem
+            key={toDo.id}
+            toDo={toDo}
+            markDone={markDone}
+            remove={remove}
+          />
+        ))}
+      </ul>
+      <ToDoForm add={add} setToDoToAdd={setToDoToAdd} toDoToAdd={toDoToAdd} />
+    </div>
+  );
+};
 
 export default App;
